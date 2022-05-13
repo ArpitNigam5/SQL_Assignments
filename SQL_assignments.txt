@@ -219,6 +219,139 @@ mysql> SELECT * FROM customers WHERE cnum > (SELECT snum+1000 FROM salespeople W
 | 2008 | Cisneros | SanJose |    300 | 1007 |
 +------+----------+---------+--------+------+
 
+19) Give the salespeople’s commissions as percentages instead of decimal numbers.
+
+mysql> SELECT snum,sname,city,comm+"%" as comm
+    -> FROM salespeople;
++------+---------+-----------+------+
+| snum | sname   | city      | comm |
++------+---------+-----------+------+
+| 1001 | Peel    | London    |   12 |
+| 1002 | Serres  | SanJose   |   13 |
+| 1003 | AxelRod | NewYork   |   10 |
+| 1004 | Motika  | London    |   11 |
+| 1007 | Rifkin  | Barcelona |   15 |
+| 1008 | Fran    | London    |   25 |
++------+---------+-----------+------+
+
+20) Find the largest order taken by each salesperson on each date, eliminating those Maximum orders, which are less than 3000.
+
+mysql> SELECT sname,amt
+    -> FROM salespeople,orders
+    -> WHERE salespeople.snum=orders.snum
+    -> AND amt>=3000;
++--------+------+
+| sname  | amt  |
++--------+------+
+| Serres | 5160 |
+| Peel   | 4723 |
+| Peel   | 9892 |
++--------+------+
+
+21) List all the largest orders for October 3, for each salesperson.
+
+mysql> SELECT sname,max(amt)
+    -> FROM salespeople,orders
+    -> WHERE salespeople.snum=orders.snum AND odate="10/03/90" GROUP BY orders.snum; 
++--------+----------+
+| sname  | max(amt) |
++--------+----------+
+| Rifkin |     1098 |
+| Motika |     1900 |
+| Peel   |      767 |
+| Serres |     5160 |
++--------+----------+
+
+22) Find all customers located in cities where Serres has customers.
+
+mysql> SELECT cname
+    -> FROM customers
+    -> WHERE CITY IN(SELECT customers.city WHERE snum="1002");
++-------+
+| cname |
++-------+
+| Liu   |
+| Grass |
++-------+
+
+23) Select all customers with a rating above 200.
+
+mysql> SELECT *
+    -> FROM customers
+    -> WHERE rating>200;
++------+----------+---------+--------+------+
+| CNUM | CNAME    | CITY    | RATING | SNUM |
++------+----------+---------+--------+------+
+| 2004 | Grass    | Berlin  |    300 | 1002 |
+| 2008 | Cisneros | SanJose |    300 | 1007 |
++------+----------+---------+--------+------+
+
+24) Count the number of salespeople currently having orders in the orders table.
+
+mysql> SELECT sname,amt
+    -> FROM salespeople,orders
+    -> WHERE salespeople.snum=orders.snum;
++---------+------+
+| sname   | amt  |
++---------+------+
+| Rifkin  |   19 |
+| Motika  | 1900 |
+| Peel    |  767 |
+| Serres  | 5160 |
+| Rifkin  | 1098 |
+| Serres  |   76 |
+| Peel    | 4723 |
+| AxelRod | 1713 |
+| Serres  | 1310 |
+| Peel    | 9892 |
++---------+------+
+
+25) Write a query that produces all customers serviced by salespeople with a commission above 12%. Output the customer’s name,
+salesperson’s name and the salesperson’s rate of commission.
+
+
+
+
+26) Find salespeople who have multiple customers.
+
+
+
+
+
+27) Find salespeople with customers located in their own cities.
+
+
+
+
+28) Find all salespeople whose name starts with ‘P’ and fourth character is ‘I’.
+
+
+
+
+
+29) Write a query that uses a subquery to obtain all orders for the customer named ‘Cisneros’. Assume you do not know his customer number.
+
+mysql> SELECT *
+    -> FROM orders
+    -> WHERE cnum IN(SELECT cnum FROM customers WHERE cname="cisneros");
++------+------+----------+------+------+
+| ONUM | AMT  | ODATE    | CNUM | SNUM |
++------+------+----------+------+------+
+| 3001 |   19 | 10/03/90 | 2008 | 1007 |
+| 3006 | 1098 | 10/03/90 | 2008 | 1007 |
++------+------+----------+------+------+
+
+30) Find the largest orders for Serres and Rifkin.
+
+
+
+ 
+
+
+
+
+
+
 
 
 
